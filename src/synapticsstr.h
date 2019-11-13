@@ -263,6 +263,7 @@ struct _SynapticsPrivateRec {
         double coast_delta_x;   /* Accumulated horizontal coast delta */
         double coast_delta_y;   /* Accumulated vertical coast delta */
         int packets_this_scroll;        /* Events received for this scroll */
+        int direction;          /* Scrolling direction, -1 = detecting, 0 = unknown, 1 = vertical, 2 = horizontal */
     } scroll;
     int count_packet_finger;    /* packet counter with finger on the touchpad */
     int button_delay_millis;    /* button delay for 3rd button emulation */

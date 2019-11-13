@@ -2475,6 +2475,7 @@ HandleScrolling(SynapticsPrivate * priv, struct SynapticsHwState *hw,
         stop_coasting(priv);
         priv->scroll.delta_y = 0;
         priv->scroll.delta_x = 0;
+        priv->scroll.direction = 0;
         if (para->circular_scrolling) {
             if ((para->circular_trigger == 0 && edge) ||
                 (para->circular_trigger == 1 && edge & TOP_EDGE) ||
@@ -2649,6 +2650,37 @@ HandleScrolling(SynapticsPrivate * priv, struct SynapticsHwState *hw,
         priv->vert_scroll_twofinger_on || priv->horiz_scroll_twofinger_on ||
         priv->circ_scroll_on) {
         priv->scroll.packets_this_scroll++;
+    }
+
+    if (
+        priv->scroll.direction == 0 &&
+        priv->vert_scroll_twofinger_on &&
+        priv->horiz_scroll_twofinger_on
+    ) {
+        priv->scroll.delta_y += (hw->y - priv->scroll.last_y);
+        priv->scroll.last_y = hw->y;
+        priv->scroll.delta_x += (hw->x - priv->scroll.last_x);
+        priv->scroll.last_x = hw->x;
+
+        if (abs(priv->scroll.delta_y - priv->scroll.delta_x) < 100) {
+            return delay;
+        }
+
+        if (abs(priv->scroll.delta_y) > abs(priv->scroll.delta_x)) {
+            priv->scroll.direction = 1;
+            priv->scroll.delta_x = 0;
+        } else {
+            priv->scroll.direction = 2;
+            priv->scroll.delta_y = 0;
+        }
+    }
+
+    if (priv->scroll.direction != 0) {
+        if (priv->scroll.direction == 1) {
+            priv->scroll.last_x = hw->x;
+        } else {
+            priv->scroll.last_y = hw->y;
+        }
     }
 
     if (priv->vert_scroll_edge_on || priv->vert_scroll_twofinger_on) {
@@ -2941,12 +2973,12 @@ post_scroll_events(const InputInfoPtr pInfo)
 
     if (priv->scroll.delta_y != 0.0) {
         valuator_mask_set_double(priv->scroll_events_mask,
-                                 priv->scroll_axis_vert, priv->scroll.delta_y);
+                                priv->scroll_axis_vert, priv->scroll.delta_y);
         priv->scroll.delta_y = 0;
     }
     if (priv->scroll.delta_x != 0.0) {
         valuator_mask_set_double(priv->scroll_events_mask,
-                                 priv->scroll_axis_horiz, priv->scroll.delta_x);
+                                priv->scroll_axis_horiz, priv->scroll.delta_x);
         priv->scroll.delta_x = 0;
     }
     if (valuator_mask_num_valuators(priv->scroll_events_mask))
