@@ -1,20 +1,20 @@
 /*
- * Copyright ï¿½ 1999 Henry Davies
- * Copyright ï¿½ 2001 Stefan Gmeiner
- * Copyright ï¿½ 2002 S. Lehner
- * Copyright ï¿½ 2002 Peter Osterlund
- * Copyright ï¿½ 2002 Linuxcare Inc. David Kennedy
- * Copyright ï¿½ 2003 Hartwig Felger
- * Copyright ï¿½ 2003 Jï¿½rg Bï¿½sner
- * Copyright ï¿½ 2003 Fred Hucht
- * Copyright ï¿½ 2004 Alexei Gilchrist
- * Copyright ï¿½ 2004 Matthias Ihmig
- * Copyright ï¿½ 2006 Stefan Bethge
- * Copyright ï¿½ 2006 Christian Thaeter
- * Copyright ï¿½ 2007 Joseph P. Skudlarek
- * Copyright ï¿½ 2008 Fedor P. Goncharov
- * Copyright ï¿½ 2008-2012 Red Hat, Inc.
- * Copyright ï¿½ 2011 The Chromium OS Authors
+ * Copyright © 1999 Henry Davies
+ * Copyright © 2001 Stefan Gmeiner
+ * Copyright © 2002 S. Lehner
+ * Copyright © 2002 Peter Osterlund
+ * Copyright © 2002 Linuxcare Inc. David Kennedy
+ * Copyright © 2003 Hartwig Felger
+ * Copyright © 2003 Jörg Bösner
+ * Copyright © 2003 Fred Hucht
+ * Copyright © 2004 Alexei Gilchrist
+ * Copyright © 2004 Matthias Ihmig
+ * Copyright © 2006 Stefan Bethge
+ * Copyright © 2006 Christian Thaeter
+ * Copyright © 2007 Joseph P. Skudlarek
+ * Copyright © 2008 Fedor P. Goncharov
+ * Copyright © 2008-2012 Red Hat, Inc.
+ * Copyright © 2011 The Chromium OS Authors
  *
  * Permission to use, copy, modify, distribute, and sell this software
  * and its documentation for any purpose is hereby granted without
@@ -41,7 +41,7 @@
  *      Stefan Bethge <stefan.bethge@web.de>
  *      Matthias Ihmig <m.ihmig@gmx.net>
  *      Alexei Gilchrist <alexei@physics.uq.edu.au>
- *      Jï¿½rg Bï¿½sner <ich@joerg-boesner.de>
+ *      Jörg Bösner <ich@joerg-boesner.de>
  *      Hartwig Felger <hgfelger@hgfelger.de>
  *      Peter Osterlund <petero2@telia.com>
  *      S. Lehner <sam_x@bluemail.ch>
@@ -2061,11 +2061,9 @@ HandleTapProcessing(SynapticsPrivate * priv, struct SynapticsHwState *hw,
         priv->touch_on.x = hw->x;
         priv->touch_on.y = hw->y;
         priv->touch_on.millis = now;
-        priv->clickpad_click_millis = max(priv->clickpad_click_millis, now - 50);
     }
     else if (release) {
         priv->touch_on.millis = now;
-        priv->clickpad_click_millis = max(priv->clickpad_click_millis, now - 50);
     }
     if (hw->z > para->finger_high)
         if (priv->tap_max_fingers < hw->numFingers)
